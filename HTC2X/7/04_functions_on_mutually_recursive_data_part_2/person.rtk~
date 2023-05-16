@@ -1,0 +1,25 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-abbr-reader.ss" "lang")((modname person) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;; person.rtk
+
+
+(define-struct person (name gender children))
+;; Person is (make-person String Gender ListOfPerson)
+;; interp. a person with first name, gender and a list of their children
+
+(define (fn-for-person p)
+  (...(person-name p)                 ;string
+	  (fn-for-gender (person-gender p));non-primitive
+	  (fn-for-lop (person-children p)));listofperson
+
+;; ListOfPerson is one of:
+;; - empty
+;; (cons Person ListOfPerson)
+;; interp. a list of persons
+
+(define (fn-for-lop lop)
+  (cond [(empty?) ...]
+   (else 
+       (...(fn-for-person p) 
+	   (fn-for-lop lop)))))
