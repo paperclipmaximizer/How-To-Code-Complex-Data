@@ -1,0 +1,22 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname sort-lon) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(define (sort-lon lon)
+  (local[;; ListOfNumber -> ListOfNumber
+;; sort the numbers in lon in increasing order
+(define (sort-lon lon)
+  (cond [(empty? lon) empty]
+        [else
+         (insert (first lon)
+                 (sort-lon (rest lon)))]))
+                 
+;; Number ListOfNumber -> ListOfNumber
+;; insert n in proper position in lon
+;; ASSUME: lon is sorted in increasing order
+(define (insert n lon)
+  (cond [(empty? lon) (cons n empty)]
+        [else
+         (if (> (first lon) n)
+             (cons n lon)
+             (cons (first lon) (insert n (rest lon))))]))]
+    (sort-lon lon)))
