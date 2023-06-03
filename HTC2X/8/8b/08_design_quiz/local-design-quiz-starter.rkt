@@ -74,15 +74,55 @@
          (... (fn-for-match (first lom))
               (fn-for-lom (rest lom)))]))
 
+;; ==============================================================
+;; Functions
+;;           -- CROSS PRODUCT OF TYPE COMMENTS TABLE --
+;;|----------------------------------------------------------------|
+;;|______________________________________  ra  ____________________|
+;;|                        |     empty      |  (cons String LOR)   |              
+;;|    ____________________|________________|______________________|
+;;| r |  empty             |        #f--->                         |
+;;| b |____________________|         |      -----------------------|
+;;|   |  (cons String LOS) |         V      | (if (= (length (ra)  |
+;;|   |                    |                |        (length (rb)) |
+;;|   |                    |                |     #t               |
+;;|   |                    |                |     #f)              |
+;;|---|--------------------|----------------|----------------------|
+;; Roster Roster -> Boolean
+;; Consumes two rosters and produces true if the lists are of same length,
+;; false otherwise
+(check-expect (all-play? R1 empty) #f)
+(check-expect (all-play? R1 R2) #f)
+(check-expect (all-play? (list "1" "2" "3" "4") R1) #t)
 
-
-
+(define (all-play? ra rb)
+  (cond [(or (empty? ra) (empty? rb)) #f]
+        [else
+         (if  (= (length ra)
+                 (length rb))
+              #t
+              #f)]))
 ; Problem 2:
-;
 ; Now write a function that, given two teams, produces the list of tennis matches
 ; that will be played.
 ;
 ; Assume that this function will only be called if the function you designed above
 ; produces true. In other words, you can assume the two teams have the same number
 ; of players.
-;
+
+;; Roster Roster -> ListOfMatch
+;; consumes two ordered team rosters (of equal length > 0) and produces a list of matchups (- a list of pairs)
+(check-expect (matchups (list "Eugenie" "Gabriela" "Sharon" "Aleksandra")
+                        (list "Maria" "Nadia" "Elena" "Anastasia"))
+              (list (make-match "Eugenie" "Maria")
+                    (make-match "Gabriela" "Nadia")
+                    (make-match "Sharon" "Elena")
+                    (make-match "Aleksandra" "Anastasia")))
+
+(define (matchups ra rb)
+  (if (empty? ra)
+      empty 
+      (cons (make-match (first ra)
+                        (first rb))
+            (matchups (rest ra)
+                      (rest rb)))))
