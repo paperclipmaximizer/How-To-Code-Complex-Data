@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-starter) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-starter) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;; parameterization-starter.rkt
 
 (* pi (sqr 4)) ;area of circle radius 4
@@ -57,11 +57,7 @@
 
 ;<template from ListOfNumber>
 
-(define (squares lon)
-  (cond [(empty? lon) empty]
-        [else
-         (cons (sqr (first lon))
-               (squares (rest lon)))]))
+(define (squares lon) (sq-sqrt sqr lon))
 
 ;; ListOfNumber -> ListOfNumber
 ;; produce list of sqrt of every number in lon
@@ -72,12 +68,14 @@
 
 ;<template from ListOfNumber>
 
-(define (square-roots lon)
+(define (square-roots lon) (sq-sqrt sqrt lon))
+
+(define (sq-sqrt m lon)
   (cond [(empty? lon) empty]
         [else
-         (cons (sqrt (first lon))
-               (square-roots (rest lon)))]))
-
+         (cons (m (first lon))
+               (sq-sqrt m (rest lon)))]))
+;; Note: after (watching the lecture) Kiczales used the fn name "map2".
 
 ;; ====================
 
@@ -90,13 +88,7 @@
 
 ;<template from ListOfNumber>
 
-(define (positive-only lon)
-  (cond [(empty? lon) empty]
-        [else
-         (if (positive? (first lon))
-             (cons (first lon)
-                   (positive-only (rest lon)))
-             (positive-only (rest lon)))]))
+(define (positive-only lon) (filter2 positive? lon))
 
 
 ;; ListOfNumber -> ListOfNumber
@@ -108,10 +100,12 @@
 
 ;<template from ListOfNumber>
 
-(define (negative-only lon)
+(define (negative-only lon) (filter2 negative? lon))
+
+(define (filter2 sgn lon)
   (cond [(empty? lon) empty]
         [else
-         (if (negative? (first lon))
+         (if (sgn (first lon))
              (cons (first lon)
-                   (negative-only (rest lon)))
-             (negative-only (rest lon)))]))
+                   (filter2 sgn (rest lon)))
+             (filter2 sgn (rest lon)))]))

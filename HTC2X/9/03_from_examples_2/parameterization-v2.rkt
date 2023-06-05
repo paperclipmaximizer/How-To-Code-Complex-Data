@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-v2) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-v2) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
 
 ;; ListOfString -> Boolean
@@ -54,6 +54,7 @@
 
 (define (square-roots lon) (map2 sqrt lon))
 
+(check-expect (map2 string-length (list "ss" "bbb")) (list 2 3))
 
 (define (map2 fn lon)
   (cond [(empty? lon) empty]
@@ -84,6 +85,14 @@
 (define (negative-only lon) (filter2 negative? lon))
 
 
+
+;; (X -> Boolean) (listof X) -> (listof Number)
+;; given a predicate and (list n0 n1 ...) if #t produce (list n0 (fn predicate n1 n2...))
+;; else (fn predicate (list n1 n2...)
+(check-expect (filter2 positive? empty) empty)
+(check-expect (filter2 positive? (list 1 -2 3 -4)) (list 1 3))
+(check-expect (filter2 negative? (list 1 -2 3 -4)) (list -2 -4))
+
 (define (filter2 pred lon)
   (cond [(empty? lon) empty]
         [else
@@ -91,3 +100,17 @@
              (cons (first lon)
                    (filter2 pred (rest lon)))
              (filter2 pred (rest lon)))]))
+
+;; (X -> Boolean) (listof X) -> Boolean
+;; produce true if pred produces true for every element of the list
+(check-expect (andmap2 positive? empty) true)
+(check-expect (andmap2 positive? (list 1 -2 3)) false)
+(check-expect (andmap2 positive? (list 1 2 3)) true)
+(check-expect (andmap2 negative? (list -1 -2 -3)) true)
+
+(define (andmap2 pred lst)
+  (cond [(empty? lst) true]
+        [else 
+         (and (pred (first lst))
+              (andmap2 pred (rest lst)))]))
+
