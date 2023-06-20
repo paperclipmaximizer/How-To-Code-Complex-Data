@@ -1,3 +1,6 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname maze-2w-v1) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;; Solve simple square mazes
 
 ;; maze-v1.rkt
@@ -26,7 +29,7 @@
 (define M1
   (list O W W W W
         O O W O O
-        W O W W W
+        W O W W W 
         O O W W W
         O O O O O))
 
@@ -37,11 +40,11 @@
         O W W W O
         O W W W O))
 
-(define M3
+(define M3            
   (list O O O O O
         O W W W W
         O W W W W
-        O W W W W
+        O W W W W 
         O O O O O))
 
 (define M4
@@ -77,5 +80,6 @@
   (local [(define s (sqrt (length m))) ;each side length
           (define x (pos-x p))
           (define y (pos-y p))]
-
+    
     (list-ref m (+ x (* y s)))))
+
