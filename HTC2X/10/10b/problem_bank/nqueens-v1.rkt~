@@ -52,8 +52,7 @@
 
 
 (define (nqueens N)
-  (local [(define (gen-bd bd)
-            (sqr 8))
+  (local [
 
 
 
